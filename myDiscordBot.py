@@ -8,9 +8,16 @@ def start(TOKEN: str, bot: commands.Bot):
         print(f'{bot.user.name} has connected to Discord!')
 
 
-    @bot.command(name = 'hello')
-    async def hello(ctx: commands.Context):
-        await ctx.send('OK')
+    @bot.command(name = "test", help = "Test current command in development")
+    async def test(ctx: commands.Context):
+        print(ctx.author)
+        await ctx.send("TEST")
+        await ctx.reply("hey hey")
+
+    
+    @bot.command(name = "summarize", help = "Summarize a subject")
+    async def summarize(ctx: commands.Context):
+        pass
+
 
     bot.run(TOKEN)
-    print("xd")
