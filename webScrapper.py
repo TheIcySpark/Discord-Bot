@@ -1,8 +1,7 @@
 import requests
-from typing import List
+from typing import List, NewType
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from webdriver_manager import chrome
+import json
 
 
 def get_links(google_search_query: str) -> List[str]:
@@ -23,19 +22,31 @@ def gahter_information(links: List[str], p_tag_min_length: int = 225) -> None:
 		if not 200 <= page_request.status_code <= 299:
 			continue
 		page_soup: BeautifulSoup = BeautifulSoup(page_request.text, 'html.parser')
-		text: List[str] = [i.get_text() for i in page_soup.find_all('p') if len(i.get_text()) >= p_tag_min_length]
-		if text != []:
-			translate_text(text[0])
+		paragraphs: List[str] = [i.get_text() for i in page_soup.find_all('p') if len(i.get_text()) >= p_tag_min_length]
+		if paragraphs != []:
+			summarize_paragraphs(paragraphs)
 			break
-		
 
-def translate_text(text: str) -> str:
-	browser: webdriver.PhantomJS = webdriver.PhantomJS(chrome.ChromeDriverManager.install(self='self'))
-	browser.get('https://translate.google.com/?hl=es&sl=en&tl=es&text=hello%0Ahello%0Ahello&op=translate')
-	html = browser.page_source
-	google_translator_request: requests.Response = requests.get('https://translate.google.com/?hl=es&sl=en&tl=es&text=hello%0Ahello%0Ahello&op=translate')
-	if not 200 <= google_translator_request.status_code <= 299:
-		return ""
-	google_translator_soup: BeautifulSoup = BeautifulSoup(html, 'html.parser')
-	print(google_translator_soup.get_text())
 
+def summarize_paragraphs(paragraphs: str) -> List[str]:
+	new_paragraphs: List[str] = []
+	for paragraph in paragraphs:
+		new_paragraphs.append(summarize_paragraph(paragraph))
+		break
+	print(new_paragraphs)
+	return new_paragraphs
+
+
+def summarize_paragraph(paragraph: str) -> str:
+	new_paragraph: str = ''
+	print(paragraph)
+	for word in paragraph.split():
+		synonymous_request: requests.Response = requests.get(' http://sesat.fdi.ucm.es:8080/servicios/rest/sinonimos/json/' + word)
+		synonymous_json: dict = json.loads(synonymous_request.text)
+		if len(synonymous_json['sinonimos']) == 0:
+			new_paragraph += word
+		else:
+			first_synonymous: str = synonymous_json['sinonimos'][0]['sinonimo']
+			new_paragraph += first_synonymous
+		new_paragraph += ' '
+	return new_paragraph
