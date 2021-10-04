@@ -9,4 +9,5 @@ if __name__ == '__main__':
 	# bot: commands.Bot
 	# TOKEN, bot = initialization.initialize()
 	# myDiscordBot.start(TOKEN, bot)
-	webScrapper.gahter_information(webScrapper.get_links('what+is+arduino'))
+	# webScrapper.gahter_information(webScrapper.get_links('what+is+arduino'))
+	webScrapper.summarize_paragraph('f')

@@ -1,7 +1,7 @@
 import requests
-from typing import List, NewType
+import goslate
+from typing import List
 from bs4 import BeautifulSoup
-import json
 
 
 def get_links(google_search_query: str) -> List[str]:
@@ -31,22 +31,16 @@ def gahter_information(links: List[str], p_tag_min_length: int = 225) -> None:
 def summarize_paragraphs(paragraphs: str) -> List[str]:
 	new_paragraphs: List[str] = []
 	for paragraph in paragraphs:
+		print(paragraph)
 		new_paragraphs.append(summarize_paragraph(paragraph))
 		break
-	print(new_paragraphs)
 	return new_paragraphs
 
 
 def summarize_paragraph(paragraph: str) -> str:
-	new_paragraph: str = ''
-	print(paragraph)
-	for word in paragraph.split():
-		synonymous_request: requests.Response = requests.get(' http://sesat.fdi.ucm.es:8080/servicios/rest/sinonimos/json/' + word)
-		synonymous_json: dict = json.loads(synonymous_request.text)
-		if len(synonymous_json['sinonimos']) == 0:
-			new_paragraph += word
-		else:
-			first_synonymous: str = synonymous_json['sinonimos'][0]['sinonimo']
-			new_paragraph += first_synonymous
-		new_paragraph += ' '
-	return new_paragraph
+	translator = goslate.Goslate()
+	# languaje_id = translator.detect(paragraph)
+	# languaje_description = translator.get_languages()[languaje_id]
+	# print(languaje_description)
+
+	print(translator.translate('hello', 'de'))
