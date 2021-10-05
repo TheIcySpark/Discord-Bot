@@ -1,13 +1,12 @@
 from discord.ext import commands
 import initialization
 import myDiscordBot
-import webScrapper
+import webScrapper	
 
 
 if __name__ == '__main__':
-	# TOKEN: str
-	# bot: commands.Bot
-	# TOKEN, bot = initialization.initialize()
-	# myDiscordBot.start(TOKEN, bot)
-	# webScrapper.gahter_information(webScrapper.get_links('what+is+arduino'))
-	webScrapper.summarize_paragraph('f')
+	TOKEN: str
+	bot: commands.Bot
+	TOKEN, bot = initialization.initialize()
+	myDiscordBot.start(TOKEN, bot)
+	
