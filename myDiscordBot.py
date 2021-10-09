@@ -46,4 +46,8 @@ def start():
         await ctx.reply('FIN')
 
 
+    @bot.event
+    async def on_command_error(ctx: commands.Context, exception):
+        await ctx.reply(exception)
+
     bot.run(TOKEN)
