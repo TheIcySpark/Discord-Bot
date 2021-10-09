@@ -1,5 +1,4 @@
 import requests
-import goslate
 from typing import Dict, List
 from bs4 import BeautifulSoup
 
